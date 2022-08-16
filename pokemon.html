@@ -23,16 +23,21 @@ function myFunction() {
 		fighting: '#E6E0D4',
 		normal: '#F5F5F5'
 	};
+
 	const main_types = Object.keys(colors);
 
 	const fetchPokemons = async () => {
-		for (let i = 1; i <= pokemons_number; i++) {
-			await getPokemon(i);
+	const url = `https://pokeapi.co/api/v2/pokemon?limit=`+pokemons_number;
+	const res = await fetch(url);
+	const pokemon = await res.json();
+		for (let i = 0; i < pokemon.results.length; i++) {
+			let urlPok = pokemon.results[i].url;
+			await getPokemon(urlPok);
 		}
 	};
 
 	const getPokemon = async id => {
-		const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+		const url = id;
 		const res = await fetch(url);
 		const pokemon = await res.json();
 		createPokemonCard(pokemon);
@@ -72,6 +77,5 @@ function myFunction() {
 	}
 
 	fetchPokemons();
-
 }
 </script>
